@@ -31,7 +31,7 @@ header {
     top: 0;
 }
 
-main {
+ul {
     margin-top: 105px;
     margin-bottom: 85px;
 }
@@ -49,6 +49,7 @@ main {
 
 .caixa-msg h1 {
     font-weight: bold;
+    margin: 0 5px;
 }
 
 .horario {
