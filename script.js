@@ -99,6 +99,19 @@ function horarioAtual() {
     agora = `${hora}:${minuto}:${segundo}`
 }
 
+function acionarEnter() {
+
+    document.addEventListener("keypress", function(e) {
+        if(e.key === 'Enter') {
+        
+            const btn = document.querySelector(".btn-enviar");
+          
+          btn.click();
+        
+        }
+    });
+}
+
 function enviarMensagem() {
 
     horarioAtual();
