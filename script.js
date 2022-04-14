@@ -31,33 +31,12 @@ function renderizarMensagens() {
 
     for(let i=0; i < mensagens.length; i++) {
         
-        switch(mensagens[i].type) {
-            case "status":
-                listaMensagens.innerHTML += `
-                <li class="caixa-msg status">
-                    <span class="horario">${mensagens[i].time}</span>
-                    <h1>${mensagens[i].from}</h1>
-                    <h2>${mensagens[i].text}</h2>
-                </li>`;
-                break;
-            case "message":
-                listaMensagens.innerHTML += `
-                <li class="caixa-msg">
-                    <span class="horario">${mensagens[i].time}</span>
-                    <h1>${mensagens[i].from}</h1>
-                    <h2>${mensagens[i].text}</h2>
-                </li>`;
-                break;
-            case "private-message":
-                listaMensagens.innerHTML += `
-                <li class="caixa-msg privado">
-                    <span class="horario">${mensagens[i].time}</span>
-                    <h1>${mensagens[i].from}</h1>
-                    <h2>${mensagens[i].text}</h2>
-                </li>`;
-                break;
-        }
-
+        listaMensagens.innerHTML += `
+            <li class="caixa-msg ${mensagens[i].type}">
+                <h1>
+                <span class="horario">${mensagens[i].time}</span> <strong>${mensagens[i].from}</strong> ${mensagens[i].text}
+                </h1>
+            </li>`;
     }
 
     const ultimo = document.querySelector("li:last-of-type");
@@ -65,16 +44,6 @@ function renderizarMensagens() {
 }
 
 function enviarStatus() {
-
-    horarioAtual();
-
-    listaMensagens.innerHTML +=
-    `<li class="caixa-msg status">
-        <span class="horario">${agora}</span>
-        <h1>${usuario.name}</h1>
-        <h2>entra na sala...</h2>
-    </li>`;
-
     setInterval(manterConexao,5000);
 }
 
