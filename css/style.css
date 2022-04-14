@@ -80,3 +80,51 @@ strong {
     color: black;
     outline: 0;
 }
+
+.escondida {
+    display: none;
+}
+
+.tela-inicial {
+    width: 100%;
+    height: 100vh;
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.tela-inicial img {
+    width: 130px;
+    height: 92px;
+    margin-bottom: 80px;
+}
+
+.tela-inicial input {
+    width: 75%;
+    height: 50px;
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    font-size: 18px;
+    color: black;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    outline: none;
+}
+
+.tela-inicial button {
+    width: 109px;
+    height: 45px;
+    border: none;
+    border-radius: 9px;
+    background-color: #E7E7E7;
+    color: #696969;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
