@@ -87,7 +87,7 @@ header {
     top: 0;
 }
 
-ul {
+.lista-mensagens {
     margin-top: 105px;
     margin-bottom: 85px;
 }
@@ -131,6 +131,69 @@ ul {
     font-style: italic;
     color: black;
     outline: 0;
+}
+
+.estado-lateral {
+    display: flex;
+}
+
+.fundo-menu-lateral {
+    width: 25%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    left: 0;
+    z-index: 2;
+}
+
+.menu-lateral {
+    display: none;
+    width: 0;
+    height: 100vh;
+    background-color: #FFFFFF;
+    position: fixed;
+    right: 0;
+    z-index: 2;
+    overflow: auto;
+}
+
+.com {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+}
+
+.menu-lateral h2 {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    margin: 15px 20px;
+    margin-top: 40px;
+}
+
+.menu-lateral span {
+    margin-left: 8px;
+}
+
+.contatos, .visibilidade {
+    font-size: 16px;
+    margin: 0 20px;
+}
+
+.contatos ion-icon, .visibilidade ion-icon {
+    font-size: 25px;
+}
+
+.contatos li, .visibilidade li {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    margin: 17px 0;
+    cursor: pointer;
+}
+
+.visibilidade li:last-of-type {
+    margin-bottom: 40px;
 }
 
 .escondida {

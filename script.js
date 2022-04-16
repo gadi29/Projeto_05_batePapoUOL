@@ -1,6 +1,7 @@
 let usuario = {name: ""};
+let contatos = [{name: ""}];
 let mensagens = [{from:"", to:"", text:"", type:"", time:""}];
-let listaMensagens = document.querySelector("ul");
+let atualizaListaContatos;
 let agora;
 
 function entrarUsuario() {
@@ -18,9 +19,10 @@ function entrarUsuario() {
 function telaMensagens() {
 
     pegarMensagens();
+    
 
     document.querySelector(".tela-inicial").classList.add("escondida");
-    document.querySelector("ul").classList.remove("escondida");
+    document.querySelector(".lista-mensagens").classList.remove("escondida");
 
     setInterval(manterConexao, 5000);
     setInterval(pegarMensagens, 3000);
@@ -54,6 +56,7 @@ function carregarMensagens(response) {
 
 function renderizarMensagens() {
     
+    let listaMensagens = document.querySelector(".lista-mensagens");
     listaMensagens.innerHTML = "";
 
     for(let i=0; i < mensagens.length; i++) {
@@ -86,8 +89,35 @@ function renderizarMensagens() {
         }
     }
     
-    const ultimaMensagem = document.querySelector("li:last-of-type");
+    const ultimaMensagem = document.querySelector(".lista-mensagens li:last-of-type");
     ultimaMensagem.scrollIntoView();
+}
+
+function pegarContatos() {
+    const promise = axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');
+    promise.then(carregarContatos);
+}
+
+function carregarContatos(response) {
+    contatos = response.data;
+    renderizarContatos();
+}
+
+function renderizarContatos() {
+    let listaContatos = document.querySelector(".contatos");
+    listaContatos.innerHTML = `
+    <li>
+        <ion-icon name="people"></ion-icon>
+        <span>Todos</span>
+    </li>`;
+
+    for (let i=0; i<contatos.length; i++) {
+        listaContatos.innerHTML += `
+        <li>
+            <ion-icon name="person-circle"></ion-icon>
+            <span>${contatos[i].name}</span>
+        </li>`
+    }
 }
 
 function enviarMensagem() {
@@ -107,6 +137,19 @@ function enviarMensagem() {
 function atualizarSite() {
     alert("Você ficou muito tempo inativo, entre novamente...")
     window.location.reload();
+}
+
+function abrirMenuLateral() {
+    pegarContatos();
+    document.querySelector(".fundo-menu-lateral").classList.remove("escondida");
+    document.querySelector(".menu-lateral").classList.add("com");
+    atualizaListaContatos = setInterval(pegarContatos, 10000);
+}
+
+function voltarTelaMensagens() {
+    document.querySelector(".fundo-menu-lateral").classList.add("escondida");
+    document.querySelector(".menu-lateral").classList.remove("com");
+    clearInterval(atualizaListaContatos);
 }
 
 function horarioAtual() {
