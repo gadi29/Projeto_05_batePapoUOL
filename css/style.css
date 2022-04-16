@@ -192,6 +192,10 @@ header {
     cursor: pointer;
 }
 
+.contatos img, .visibilidade img{
+    margin-left: 10px;
+}
+
 .visibilidade li:last-of-type {
     margin-bottom: 40px;
 }

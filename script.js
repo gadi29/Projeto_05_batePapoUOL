@@ -106,14 +106,14 @@ function carregarContatos(response) {
 function renderizarContatos() {
     let listaContatos = document.querySelector(".contatos");
     listaContatos.innerHTML = `
-    <li>
+    <li onclick="escolherContato(this)">
         <ion-icon name="people"></ion-icon>
         <span>Todos</span>
     </li>`;
 
     for (let i=0; i<contatos.length; i++) {
         listaContatos.innerHTML += `
-        <li>
+        <li onclick="escolherContato(this)">
             <ion-icon name="person-circle"></ion-icon>
             <span>${contatos[i].name}</span>
         </li>`
@@ -150,6 +150,30 @@ function voltarTelaMensagens() {
     document.querySelector(".fundo-menu-lateral").classList.add("escondida");
     document.querySelector(".menu-lateral").classList.remove("com");
     clearInterval(atualizaListaContatos);
+}
+
+function escolherContato(elemento) {
+
+    let contatoSelecionado;
+    contatoSelecionado = document.querySelector(".contato-selecionado");
+
+    if (contatoSelecionado !== null) {
+        contatoSelecionado.parentNode.removeChild(contatoSelecionado);
+    }
+
+    elemento.innerHTML += `<img src="img/Vector.png" alt="" class="contato-selecionado">`;
+}
+
+function escolherVisibilidade(elemento) {
+
+    let visibilidade;
+    visibilidade = document.querySelector(".visib-selecionada");
+
+    if (visibilidade !== null) {
+        visibilidade.parentNode.removeChild(visibilidade);
+    }
+
+    elemento.innerHTML += `<img src="img/Vector.png" alt="" class="visib-selecionada">`;
 }
 
 function horarioAtual() {
