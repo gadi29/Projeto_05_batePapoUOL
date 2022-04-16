@@ -7,10 +7,12 @@ function entrarUsuario() {
 
     const escolherUsuario = document.querySelector(".tela-inicial input").value;
     usuario.name = escolherUsuario;
-    
+    document.querySelector(".carregamento").classList.remove("escondida");
+
     const promise = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', usuario);
     promise.then(telaMensagens);
     promise.catch(tratarErro);
+
 }
 
 function telaMensagens() {
@@ -18,14 +20,15 @@ function telaMensagens() {
     pegarMensagens();
 
     document.querySelector(".tela-inicial").classList.add("escondida");
-    document.querySelector("header").classList.remove("escondida");
-    document.querySelector(".barra-msg").classList.remove("escondida");
+    document.querySelector("ul").classList.remove("escondida");
 
-    setInterval(manterConexao,5000);
+    setInterval(manterConexao, 5000);
     setInterval(pegarMensagens, 3000);
 }
 
 function tratarErro(error) {
+
+    document.querySelector(".carregamento").classList.add("escondida");
 
     if (error.response.status === 400) {
         alert("Esse nome já existe, digite um outro nome de usuário");
@@ -83,8 +86,8 @@ function renderizarMensagens() {
         }
     }
     
-    const ultimo = document.querySelector("li:last-of-type");
-    ultimo.scrollIntoView();
+    const ultimaMensagem = document.querySelector("li:last-of-type");
+    ultimaMensagem.scrollIntoView();
 }
 
 function enviarMensagem() {
@@ -102,6 +105,7 @@ function enviarMensagem() {
 }
 
 function atualizarSite() {
+    alert("Você ficou muito tempo inativo, entre novamente...")
     window.location.reload();
 }
 
@@ -116,11 +120,12 @@ function horarioAtual() {
 
 function acionarEnter() {
 
-    document.addEventListener("keypress", function(e) {
+    document.addEventListener("keydown", function(e) {
         if(e.key === 'Enter') {
-        
+
             const btn = document.querySelector(".enviar-msg");
             btn.click();
+            
         }
     });
 }

@@ -11,18 +11,19 @@
 </head>
 <body>
     <div class="tela-inicial">
-        <img src="img/logo 1.png" alt="">
+        <img src="img/logo 1.png" alt="" class="logo">
         <input type="text" placeholder="Digite seu nome">
         <button onclick="entrarUsuario()">Entrar</button>
+        <img src="img/loading-buffering.gif" alt="" class="carregamento escondida">
     </div>
-    <header class="escondida">
+    <header class="menu">
         <img src="img/logo 1.png" alt="">
         <ion-icon name="people"></ion-icon>
     </header>
-    <ul>
+    <ul class="escondida">
 
     </ul>
-    <div class="barra-msg escondida">
+    <div class="barra-msg">
         <input type="text" placeholder="Escreva aqui..." onclick="acionarEnter()">
         <ion-icon name="paper-plane-outline" class="enviar-msg" onclick="enviarMensagem()"></ion-icon>
     </div>
