@@ -111,7 +111,7 @@ header {
     color: #AAAAAA;
 }
 
-.private-message {
+.private_message {
     background-color: #F8DDDD;
 }
 
@@ -124,13 +124,28 @@ header {
     bottom: 0;
 }
 
-.barra-msg input {
+.mensagem-descricao {
+    display: flex;
+    flex-direction: column;
+}
+
+.mensagem-descricao input {
     width: 90%;
     border: none;
     font-size: 18px;
     font-style: italic;
     color: black;
     outline: 0;
+}
+
+.mensagem-descricao input::placeholder {
+    color: black;
+}
+
+.mensagem-descricao h3 {
+    font-size: 16px;
+    color: #505050;
+    margin-top: 5px;
 }
 
 .estado-lateral {
@@ -143,6 +158,7 @@ header {
     background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
     left: 0;
+    top: 0;
     z-index: 2;
 }
 
@@ -153,6 +169,7 @@ header {
     background-color: #FFFFFF;
     position: fixed;
     right: 0;
+    top: 0;
     z-index: 2;
     overflow: auto;
 }

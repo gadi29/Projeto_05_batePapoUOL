@@ -1,6 +1,8 @@
 let usuario = {name: ""};
 let contatos = [{name: ""}];
 let mensagens = [{from:"", to:"", text:"", type:"", time:""}];
+let enviarPara;
+let visibilidadeType;
 let atualizaListaContatos;
 let agora;
 
@@ -19,7 +21,7 @@ function entrarUsuario() {
 function telaMensagens() {
 
     pegarMensagens();
-    
+    pegarContatos();
 
     document.querySelector(".tela-inicial").classList.add("escondida");
     document.querySelector(".lista-mensagens").classList.remove("escondida");
@@ -78,19 +80,39 @@ function renderizarMensagens() {
                     </h1>
                 </li>`;
                 break;
-            case "private-message":
-                listaMensagens.innerHTML += `
+            case "private_message":
+                if ((mensagens[i].to || mensagens[i].from) === usuario.name) {
+                    listaMensagens.innerHTML += `
                 <li class="caixa-msg ${mensagens[i].type}">
                     <h1>
-                    <span class="horario">${mensagens[i].time}</span> <strong>${mensagens[i].from}</strong> para <strong>${mensagens[i].to}</strong>: ${mensagens[i].text}
+                    <span class="horario">${mensagens[i].time}</span> <strong>${mensagens[i].from}</strong> reservadamente para <strong>${mensagens[i].to}</strong>: ${mensagens[i].text}
                     </h1>
                 </li>`;
+                }
                 break;
-        }
+        };
     }
     
     const ultimaMensagem = document.querySelector(".lista-mensagens li:last-of-type");
     ultimaMensagem.scrollIntoView();
+
+    const imagemContato = document.querySelector(".contato-selecionado");
+    const liSelecionada = imagemContato.parentNode.querySelector("span");
+    enviarPara = liSelecionada.innerHTML;
+
+    const imagemVisib = document.querySelector(".visib-selecionada");
+    const visibSelecionada = imagemVisib.parentNode.querySelector("span");
+    let visibilidadeEnvio = visibSelecionada.innerHTML;
+
+    const textoDescricao = document.querySelector(".mensagem-descricao").querySelector("h3");
+    textoDescricao.innerHTML = `Enviando para ${enviarPara} (${visibilidadeEnvio})`;
+
+    if (visibilidadeEnvio === "Reservadamente") {
+        visibilidadeType = "private_message";
+    } else if (visibilidadeEnvio === "Público") {
+        visibilidadeType = "message";
+    }
+    console.log(visibilidadeType);
 }
 
 function pegarContatos() {
@@ -109,14 +131,18 @@ function renderizarContatos() {
     <li onclick="escolherContato(this)">
         <ion-icon name="people"></ion-icon>
         <span>Todos</span>
+        <img src="img/Vector.png" alt="" class="contato-selecionado">
     </li>`;
 
     for (let i=0; i<contatos.length; i++) {
-        listaContatos.innerHTML += `
-        <li onclick="escolherContato(this)">
-            <ion-icon name="person-circle"></ion-icon>
-            <span>${contatos[i].name}</span>
-        </li>`
+
+        if (contatos[i].name !== usuario.name) {
+            listaContatos.innerHTML += `
+            <li onclick="escolherContato(this)">
+                <ion-icon name="person-circle"></ion-icon>
+                <span>${contatos[i].name}</span>
+            </li>`
+        }
     }
 }
 
@@ -125,7 +151,7 @@ function enviarMensagem() {
     horarioAtual();
 
     const textoMensagem = document.querySelector(".barra-msg input").value;
-    const mensagem = {from:`${usuario.name}`, to:"Todos", text:`${textoMensagem}`, type:"message", time:`${agora}`}
+    const mensagem = {from:`${usuario.name}`, to:`${enviarPara}`, text:`${textoMensagem}`, type:`${visibilidadeType}`, time:`${agora}`}
 
     const promise = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', mensagem);
     promise.then(pegarMensagens);
