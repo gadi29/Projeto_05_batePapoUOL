@@ -112,7 +112,6 @@ function renderizarMensagens() {
     } else if (visibilidadeEnvio === "Público") {
         visibilidadeType = "message";
     }
-    console.log(visibilidadeType);
 }
 
 function pegarContatos() {
