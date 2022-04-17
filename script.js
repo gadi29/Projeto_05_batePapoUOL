@@ -15,7 +15,6 @@ function entrarUsuario() {
     const promise = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', usuario);
     promise.then(telaMensagens);
     promise.catch(tratarErro);
-
 }
 
 function telaMensagens() {
@@ -81,7 +80,7 @@ function renderizarMensagens() {
                 </li>`;
                 break;
             case "private_message":
-                if ((mensagens[i].to || mensagens[i].from) === usuario.name) {
+                if ((mensagens[i].to === usuario.name) || (mensagens[i].from === usuario.name)) {
                     listaMensagens.innerHTML += `
                 <li class="caixa-msg ${mensagens[i].type}">
                     <h1>
@@ -96,22 +95,7 @@ function renderizarMensagens() {
     const ultimaMensagem = document.querySelector(".lista-mensagens li:last-of-type");
     ultimaMensagem.scrollIntoView();
 
-    const imagemContato = document.querySelector(".contato-selecionado");
-    const liSelecionada = imagemContato.parentNode.querySelector("span");
-    enviarPara = liSelecionada.innerHTML;
-
-    const imagemVisib = document.querySelector(".visib-selecionada");
-    const visibSelecionada = imagemVisib.parentNode.querySelector("span");
-    let visibilidadeEnvio = visibSelecionada.innerHTML;
-
-    const textoDescricao = document.querySelector(".mensagem-descricao").querySelector("h3");
-    textoDescricao.innerHTML = `Enviando para ${enviarPara} (${visibilidadeEnvio})`;
-
-    if (visibilidadeEnvio === "Reservadamente") {
-        visibilidadeType = "private_message";
-    } else if (visibilidadeEnvio === "Público") {
-        visibilidadeType = "message";
-    }
+    salvarDadosEnvio();
 }
 
 function pegarContatos() {
@@ -126,6 +110,7 @@ function carregarContatos(response) {
 
 function renderizarContatos() {
     let listaContatos = document.querySelector(".contatos");
+
     listaContatos.innerHTML = `
     <li onclick="escolherContato(this)">
         <ion-icon name="people"></ion-icon>
@@ -145,23 +130,48 @@ function renderizarContatos() {
     }
 }
 
+function salvarDadosEnvio() {
+    const imagemContato = document.querySelector(".contato-selecionado");
+    const liSelecionada = imagemContato.parentNode.querySelector("span");
+    enviarPara = liSelecionada.innerHTML;
+
+    const imagemVisib = document.querySelector(".visib-selecionada");
+    const visibSelecionada = imagemVisib.parentNode.querySelector("span");
+    let visibilidadeEnvio = visibSelecionada.innerHTML;
+
+    const textoDescricao = document.querySelector(".mensagem-descricao").querySelector("h3");
+    textoDescricao.innerHTML = `Enviando para ${enviarPara} (${visibilidadeEnvio})`;
+
+    if (visibilidadeEnvio === "Reservadamente") {
+        visibilidadeType = "private_message";
+    } else if (visibilidadeEnvio === "Público") {
+        visibilidadeType = "message";
+    }
+}
+
 function enviarMensagem() {
 
     horarioAtual();
 
-    const textoMensagem = document.querySelector(".barra-msg input").value;
-    const mensagem = {from:`${usuario.name}`, to:`${enviarPara}`, text:`${textoMensagem}`, type:`${visibilidadeType}`, time:`${agora}`}
+    let textoMensagem = document.querySelector(".barra-msg input").value;
+    let mensagem = {from:usuario.name, to:enviarPara, text:textoMensagem, type:visibilidadeType, time:agora};
+    console.log(enviarPara);
+    console.log(mensagem);
 
     const promise = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', mensagem);
     promise.then(pegarMensagens);
-    promise.catch(atualizarSite);
+    promise.catch(tratarErroEnvio);
 
     document.querySelector(".barra-msg input").value = "";
 }
 
-function atualizarSite() {
-    alert("Você ficou muito tempo inativo, entre novamente...")
-    window.location.reload();
+function tratarErroEnvio(error) {
+
+    console.log(error.response.status);
+    if (error.response.status === 400) {
+        alert("Você ficou muito tempo inativo, entre novamente...")
+        window.location.reload();
+    }
 }
 
 function abrirMenuLateral() {
@@ -210,14 +220,15 @@ function horarioAtual() {
     agora = `${hora}:${minuto}:${segundo}`
 }
 
-function acionarEnter() {
+document.addEventListener("keyup", function(e) {
+    let textoInput = document.querySelector(".barra-msg input").value;
+    let listaEscondida = document.querySelector(".lista-mensagens").classList.contains("escondida");
 
-    document.addEventListener("keydown", function(e) {
-        if(e.key === 'Enter') {
-
-            const btn = document.querySelector(".enviar-msg");
-            btn.click();
-            
-        }
-    });
-}
+    if((e.key === 'Enter') && (textoInput !== "")) {
+        const button = document.querySelector(".enviar-msg");
+        button.click();
+    } else if ((e.key === 'Enter') && (listaEscondida)) {
+        const btn = document.querySelector(".enviar-user");
+        btn.click();
+    }
+})
