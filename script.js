@@ -155,8 +155,6 @@ function enviarMensagem() {
 
     let textoMensagem = document.querySelector(".barra-msg input").value;
     let mensagem = {from:usuario.name, to:enviarPara, text:textoMensagem, type:visibilidadeType, time:agora};
-    console.log(enviarPara);
-    console.log(mensagem);
 
     const promise = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', mensagem);
     promise.then(pegarMensagens);
@@ -167,7 +165,6 @@ function enviarMensagem() {
 
 function tratarErroEnvio(error) {
 
-    console.log(error.response.status);
     if (error.response.status === 400) {
         alert("Você ficou muito tempo inativo, entre novamente...")
         window.location.reload();
